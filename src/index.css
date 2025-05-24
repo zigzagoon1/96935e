@@ -22,3 +22,15 @@ code {
 .inner-objects {
   padding-left: 50px;
 }
+
+.form-node {
+  font-size: large;
+  font-weight: bold;
+  background-color: bisque;
+  border: black;
+  border-style: solid;
+  border-width: 2px;
+  width: 400px;
+  padding: 16px;
+  margin: 10px
+}

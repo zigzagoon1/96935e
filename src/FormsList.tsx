@@ -2,8 +2,9 @@ import { useEffect, useReducer } from 'react';
 import useFetch from './useFetch';
 import RenderFieldRecursive from './RenderRecursive';
 import dagFormReducer, { State, Action } from './dagFormReducer';
+import Form from './Form';
 
-const Forms = () => {
+const FormsList = () => {
   const { data, loading, error, fetchData } = useFetch({
     url: 'http://localhost:4000/api/v1/123/actions/blueprints/bp_456/graph',
   });
@@ -18,7 +19,18 @@ const Forms = () => {
 
   useEffect(() => {
     if (data) {
-      extractSection('nodes');
+      const nodes = extractSection('nodes');
+      if (nodes) {
+        const forms = extractSection('forms');
+        if (forms) {
+          dispatch({
+            type: 'SET_FORMS',
+            nodes: nodes[1],
+            formSchemas: forms[1],
+          });
+        }
+      }
+      console.log(state);
     }
   }, [data]);
 
@@ -27,19 +39,21 @@ const Forms = () => {
       const section = Object.entries(data).find((x) => x[0] === sectionName);
       console.log(section?.[1]);
       if (section) {
-        dispatch({ type: 'SET_FORMS', forms: section });
+        return section;
       }
+      return null;
     }
-    console.log(state);
   };
 
   return (
     <div id='data-render'>
       {loading && <span>Loading...</span>}
       {error && <span>Error: {error}</span>}
-      {state && <RenderFieldRecursive value={state} />}
+      {Object.values(state.forms).map((form) => (
+        <Form key={form.id} form={form} dispatch={dispatch} />
+      ))}
     </div>
   );
 };
 
-export default Forms;
+export default FormsList;
