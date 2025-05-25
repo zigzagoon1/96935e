@@ -84,32 +84,77 @@ const Form = ({ form, state, dispatch }: FormProps) => {
       {showFields ? (
         <>
           <form>
-            {Object.entries(fields).map(([fieldName, fieldValue]) => (
-              <div key={String(fieldName)}>
-                <label style={{ paddingRight: '5px' }}>{fieldName}</label>
-                <input
-                  type='text'
-                  value={
-                    typeof fieldValue === 'string'
-                      ? fieldValue
-                      : JSON.stringify(fieldValue)
-                  }
-                  onChange={(e) =>
-                    handleChange(String(fieldName), e.target.value)
-                  }
-                />
-                {form.prefillEnabled && (
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setModalField(fieldName);
-                    }}
-                  >
-                    Configure
-                  </button>
-                )}
-              </div>
-            ))}
+            {Object.entries(fields).map(([fieldName, fieldValue]) => {
+              const sourceFormId = form.fields[fieldName].prefillSource;
+              const sourceFormName =
+                sourceFormId && state.forms[sourceFormId]?.name;
+
+              const isPrefilled =
+                form.prefillEnabled &&
+                !!sourceFormId &&
+                typeof form.fields[fieldName].value === 'string' &&
+                (form.fields[fieldName].value as string).trim() !== '';
+              return (
+                <div
+                  style={{
+                    border: 'black',
+                    borderRadius: '100px',
+                    borderStyle: 'solid',
+                    borderWidth: '1px',
+                    margin: '10px',
+                    padding: '5px',
+                    backgroundColor: 'lightGray',
+                    display: 'flex',
+                  }}
+                  key={fieldName}
+                >
+                  <label style={{ paddingRight: '5px' }}>{fieldName}</label>
+                  <input
+                    type='text'
+                    value={fieldValue}
+                    onChange={(e) => handleChange(fieldName, e.target.value)}
+                    disabled={form.prefillEnabled}
+                  />
+                  {isPrefilled && (
+                    <div
+                      style={{
+                        fontSize: '0.8em',
+                        paddingLeft: '10px',
+                        paddingRight: '10px',
+                      }}
+                    >
+                      {sourceFormName}.{fieldName}
+                    </div>
+                  )}
+                  {form.prefillEnabled && (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setModalField(fieldName);
+                      }}
+                      style={{ marginLeft: '10px', marginRight: '10px' }}
+                    >
+                      Configure
+                    </button>
+                  )}
+                  {form.prefillEnabled && fieldValue !== '' && (
+                    <button
+                      style={{ borderRadius: '100px', marginLeft: '10px' }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        dispatch({
+                          type: 'CLEAR_PREFILL_CONFIGURATION',
+                          formId: form.id,
+                          field: fieldName,
+                        });
+                      }}
+                    >
+                      X
+                    </button>
+                  )}
+                </div>
+              );
+            })}
           </form>
           <button key={form.id} type='submit' onClick={submitFields}>
             Submit

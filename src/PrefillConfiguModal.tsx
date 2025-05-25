@@ -66,6 +66,7 @@ const PrefillConfigModal = ({
 
   return createPortal(
     <div className='modal-backdrop'>
+      <button onClick={(e) => onClose()}>Close</button>
       <div className='modal'>
         <h3 style={{ textAlign: 'center' }}>
           Configure Prefill for "{fieldName}"
@@ -85,7 +86,6 @@ const PrefillConfigModal = ({
           ))}
         </ul>
         <button onClick={handleClear}>Clear Prefill</button>
-        <button onClick={onClose}>Close</button>
       </div>
     </div>,
     document.body
