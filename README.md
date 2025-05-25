@@ -1,46 +1,20 @@
-# Getting Started with Create React App
+# Code Challenge for Avantos
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is for a code challenge for Avantos. It is made with Create React App and TypeScript.
 
-## Available Scripts
+To run the project locally after cloning, be sure to `npm install` to install dependencies. Then, navigate to the frontendchallengeserver folder in your terminal and run:
 
-In the project directory, you can run:
+`npm start`
 
-### `npm start`
+This starts the mock server. You can view the json data at localhost:4000. Then navigate to the 96935e directory and run:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+`npm start`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+This starts a development server to view the frontend in your browser. You can view the project at localhost:3000.
 
-### `npm test`
+This project demonstrates a DAG form setup where you can prefill fields in one form from the already-submitted values in upstream forms. Forms use basic UI.
+Clicking the form name (ie. Form A) shows the fields in that form. Although some of the fields of the form are different types (ie. Select/Options), we only display basic text input fields for each one in the form. Clicking a field name opens a modal that allows you to configure which form it draws from to prefill that field.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+You must enable the checkbox "Prefill fields for this form" in order to prefill fields.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Keep in mind that for this coding challenge, refreshing the page will clear the state of all of the forms. To do this I would have to write code to post and modify graph.json, but that is beyond the scope of this challenge.

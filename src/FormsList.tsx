@@ -52,7 +52,7 @@ const FormsList = () => {
       {Object.values(state.forms)
         .sort((a, b) => a.name.localeCompare(b.name)) // Just sort by name for our current purposes; better to sort by DAG order going forward
         .map((form) => (
-          <Form key={form.id} form={form} dispatch={dispatch} />
+          <Form key={form.id} form={form} state={state} dispatch={dispatch} />
         ))}
     </div>
   );

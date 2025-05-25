@@ -30,7 +30,20 @@ code {
   border: black;
   border-style: solid;
   border-width: 2px;
-  width: 400px;
+  width: 600px;
   padding: 16px;
   margin: 10px
+}
+
+.modal-backdrop {
+  position: fixed;
+  justify-content: center;
+  justify-self: center;
+  align-items: center;
+  border: black;
+  border-style: solid;
+  inset: 0;
+  background-color: white;
+  width: 500px;
+  height: 500px;
 }

@@ -17,7 +17,7 @@ export type State = {
 
 export type FieldValue = {
     fieldName: string;
-    value: string | [] | {};
+    value: string | string[] | Record<string, any>;
     prefillEnabled: boolean;
     prefillSource?: string;
 }
@@ -27,6 +27,7 @@ export type Action =
     | { type: "UPDATE_FIELD"; formId: string; field: string; value: string; }
     | { type: "TOGGLE_PREFILL_FOR_FORM"; formId: string; prefillEnabled: boolean;}
     | { type: "CONFIGURE_PREFILL_FIELD"; formId: string; field: string; sourceFormId: string; sourceValue: string;}
+    | { type: "CLEAR_PREFILL_CONFIGURATION"; formId: string; field: string;}
     | { type: "RESET_FORM"; formId: string; }
 
 
@@ -78,11 +79,11 @@ const dagFormReducer = (state: State, action: Action): State => {
                             ...form.fields,
                             [field]: {
                                 ...form.fields[field],
-                                value
-                            }
-                        }
-                    }
-                }
+                                value,
+                            },
+                        },
+                    },
+                },
             };
         }
         case 'TOGGLE_PREFILL_FOR_FORM': {
@@ -94,9 +95,9 @@ const dagFormReducer = (state: State, action: Action): State => {
                     ...state.forms,
                     [formId]: {
                         ...form,
-                        prefillEnabled
-                    }
-                }
+                        prefillEnabled,
+                    },
+                },
             }
         }
         case 'CONFIGURE_PREFILL_FIELD': {
@@ -114,11 +115,33 @@ const dagFormReducer = (state: State, action: Action): State => {
                                 ...form.fields[field],
                                 prefillEnabled: true,
                                 prefillSource: sourceFormId,
-                                value: sourceValue
-                            }
-                        }
-                    }
-                }
+                                value: sourceValue,
+                            },
+                        },
+                    },
+                },
+            }
+        }
+        case 'CLEAR_PREFILL_CONFIGURATION': {
+            const { formId, field } = action;
+            const form = state.forms[formId];
+            return {
+                ...state,
+                forms: {
+                    ...state.forms,
+                    [formId]: {
+                        ...form,
+                        fields: {
+                            ...form.fields,
+                            [field]: {
+                                ...form.fields[field],
+                                value: '',
+                                prefillEnabled: false,
+                                prefillSource: undefined,
+                            },
+                        },
+                    },
+                },
             }
         }
         case "RESET_FORM": {
