@@ -1,5 +1,3 @@
-import { stat } from "fs";
-
 export type FormState = {
     id: string;
     name: string;
@@ -36,11 +34,8 @@ const dagFormReducer = (state: State, action: Action): State => {
     switch (action.type) {
         case 'SET_FORMS': {
             const {nodes, formSchemas } = action;
-            console.log(nodes);
 
             const schemaMap = Object.fromEntries(formSchemas.map((schema) => [schema.id, schema]));
-            console.log(formSchemas);
-            console.log(schemaMap);
             const formState: State['forms'] = {};
 
             for (const node of nodes) {
@@ -129,9 +124,9 @@ const dagFormReducer = (state: State, action: Action): State => {
         case "RESET_FORM": {
             return state;
         }
-        default: {
+        default: 
             return state;
-        }
+
     }
 }
 
