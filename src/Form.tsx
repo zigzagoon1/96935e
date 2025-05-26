@@ -85,9 +85,10 @@ const Form = ({ form, state, dispatch }: FormProps) => {
         <>
           <form>
             {Object.entries(fields).map(([fieldName, fieldValue]) => {
-              const sourceFormId = form.fields[fieldName].prefillSource;
+              const sourceFormId = form.fields[fieldName].prefillSourceForm;
               const sourceFormName =
                 sourceFormId && state.forms[sourceFormId]?.name;
+              const sourceFieldName = form.fields[fieldName].prefillSourceField;
 
               const isPrefilled =
                 form.prefillEnabled &&
@@ -123,7 +124,7 @@ const Form = ({ form, state, dispatch }: FormProps) => {
                         paddingRight: '10px',
                       }}
                     >
-                      {sourceFormName}.{fieldName}
+                      {sourceFormName}.{sourceFieldName}
                     </div>
                   )}
                   {form.prefillEnabled && (

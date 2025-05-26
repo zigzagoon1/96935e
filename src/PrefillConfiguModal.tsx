@@ -22,24 +22,34 @@ const PrefillConfigModal = ({
 }: Props) => {
   if (!isOpen) return null;
 
-  const currentForm = state.forms[formId];
   const upstreamFormIds = getUpstreamForms(formId, state.forms);
-  const options: { label: string; sourceFormId: string; value: string }[] = [];
+  const options: {
+    label: string;
+    sourceFormId: string;
+    sourceField: string;
+    value: string;
+  }[] = [];
 
   for (const [id, form] of Object.entries(state.forms)) {
     if (!upstreamFormIds.has(id)) continue;
 
-    const field = form.fields[fieldName];
-    if (field && typeof field.value === 'string') {
-      options.push({
-        label: `${form.name}: ${fieldName} -> "${field.value}"`,
-        sourceFormId: id,
-        value: field.value,
-      });
+    for (const [sourceFieldName, field] of Object.entries(form.fields)) {
+      if (typeof field.value === 'string' && field.value !== '') {
+        options.push({
+          label: `${form.name}.${sourceFieldName} -> "${field.value}"`,
+          sourceFormId: id,
+          sourceField: sourceFieldName,
+          value: field.value,
+        });
+      }
     }
   }
 
-  const handleSelect = (sourceFormId: string, value: string) => {
+  const handleSelect = (
+    sourceFormId: string,
+    sourceField: string,
+    value: string
+  ) => {
     console.log(value);
     if (state.forms[formId].prefillEnabled) {
       dispatch({
@@ -47,6 +57,7 @@ const PrefillConfigModal = ({
         formId,
         field: fieldName,
         sourceFormId,
+        sourceField,
         sourceValue: value,
       });
     }
@@ -78,7 +89,13 @@ const PrefillConfigModal = ({
           {options.map((option) => (
             <li key={`${option.sourceFormId} ${option.label}`}>
               <button
-                onClick={() => handleSelect(option.sourceFormId, option.value)}
+                onClick={() =>
+                  handleSelect(
+                    option.sourceFormId,
+                    option.sourceField,
+                    option.value
+                  )
+                }
               >
                 Use {option.label}
               </button>

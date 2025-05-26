@@ -19,16 +19,16 @@ export type FieldValue = {
     fieldName: string;
     value: string | string[] | Record<string, any>;
     prefillEnabled: boolean;
-    prefillSource?: string;
+    prefillSourceForm?: string;
+    prefillSourceField?: string;
 }
 
 export type Action = 
     | {type: "SET_FORMS"; nodes: any[]; formSchemas: any[] }
     | { type: "UPDATE_FIELD"; formId: string; field: string; value: string; }
     | { type: "TOGGLE_PREFILL_FOR_FORM"; formId: string; prefillEnabled: boolean;}
-    | { type: "CONFIGURE_PREFILL_FIELD"; formId: string; field: string; sourceFormId: string; sourceValue: string;}
+    | { type: "CONFIGURE_PREFILL_FIELD"; formId: string; field: string; sourceFormId: string; sourceField: string; sourceValue: string;}
     | { type: "CLEAR_PREFILL_CONFIGURATION"; formId: string; field: string;}
-    | { type: "RESET_FORM"; formId: string; }
 
 
 const dagFormReducer = (state: State, action: Action): State => {
@@ -101,7 +101,7 @@ const dagFormReducer = (state: State, action: Action): State => {
             }
         }
         case 'CONFIGURE_PREFILL_FIELD': {
-            const { formId, field, sourceFormId, sourceValue } = action;
+            const { formId, field, sourceFormId, sourceField, sourceValue } = action;
             const form = state.forms[formId];
             return {
                 ...state,
@@ -114,7 +114,8 @@ const dagFormReducer = (state: State, action: Action): State => {
                             [field]: {
                                 ...form.fields[field],
                                 prefillEnabled: true,
-                                prefillSource: sourceFormId,
+                                prefillSourceForm: sourceFormId,
+                                prefillSourceField: sourceField,
                                 value: sourceValue,
                             },
                         },
@@ -137,15 +138,12 @@ const dagFormReducer = (state: State, action: Action): State => {
                                 ...form.fields[field],
                                 value: '',
                                 prefillEnabled: false,
-                                prefillSource: undefined,
+                                prefillSourceForm: undefined,
                             },
                         },
                     },
                 },
             }
-        }
-        case "RESET_FORM": {
-            return state;
         }
         default: 
             return state;
